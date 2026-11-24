@@ -1,1 +1,13 @@
 @import 'tailwindcss';
+
+@layer base {
+  body {
+    font-family: 'Google Sans Flex', sans-serif;
+  }
+
+  button,
+  [role='button'],
+  a[href] {
+    @apply cursor-pointer;
+  }
+}

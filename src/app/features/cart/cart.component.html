@@ -1,0 +1,98 @@
+<section class="max-w-7xl mx-auto px-4 py-8">
+  <h1 class="text-2xl font-medium text-neutral-900 mb-6">Carrito</h1>
+
+  @if (cartService.items().length === 0) {
+    <div class="flex flex-col items-center justify-center py-20 gap-4 bg-white border border-neutral-200 rounded-xl">
+      <svg class="w-12 h-12 text-neutral-300" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+      </svg>
+      <p class="text-neutral-500">Tu carrito está vacío</p>
+      <a routerLink="/" class="text-sm font-medium text-white bg-red-600 hover:bg-red-700 px-5 py-2 rounded-full transition">Seguir comprando</a>
+    </div>
+  } @else {
+    <div class="flex flex-col lg:flex-row gap-6">
+      <!-- Productos -->
+      <div class="flex-[2] flex flex-col gap-4">
+        @for (item of cartService.items(); track item.product.id) {
+          <article class="flex items-center gap-4 bg-white border border-neutral-200 rounded-xl p-4 shadow-sm hover:shadow-md transition">
+            <div class="h-24 w-24 shrink-0 rounded-lg bg-neutral-50 flex items-center justify-center overflow-hidden">
+              <img [src]="item.product.imageUrl" [alt]="item.product.name" class="h-full w-full object-contain" />
+            </div>
+
+            <div class="flex-1 min-w-0">
+              <p class="text-xs font-medium text-neutral-500 uppercase tracking-wide">{{ item.product.brand }}</p>
+              <p class="font-medium text-neutral-800 line-clamp-2 mt-0.5">{{ item.product.name }}</p>
+              @if (item.product.unitText) {
+                <p class="text-xs text-neutral-400 mt-1">{{ item.product.unitText }}</p>
+              }
+              <div class="flex items-baseline gap-2 mt-2">
+                <span class="text-base font-medium text-red-600">S/ {{ item.product.onlinePrice | number: '1.2-2' }}</span>
+                @if (item.product.regularPrice > item.product.onlinePrice) {
+                  <span class="text-xs text-neutral-400 line-through">S/ {{ item.product.regularPrice | number: '1.2-2' }}</span>
+                }
+              </div>
+            </div>
+
+            <div class="flex flex-col items-end gap-2 shrink-0">
+              <span class="text-xs text-neutral-500">Cantidad</span>
+              <div class="flex items-center gap-2 border border-neutral-200 rounded-full px-2 py-1">
+                <button
+                  type="button"
+                  (click)="cartService.decrement(item.product.id)"
+                  class="w-6 h-6 flex items-center justify-center rounded-full text-neutral-600 hover:bg-neutral-100 transition"
+                  aria-label="Disminuir cantidad"
+                >−</button>
+                <span class="text-sm font-medium text-neutral-800 w-6 text-center">{{ item.quantity }}</span>
+                <button
+                  type="button"
+                  (click)="cartService.increment(item.product.id)"
+                  class="w-6 h-6 flex items-center justify-center rounded-full text-neutral-600 hover:bg-neutral-100 transition"
+                  aria-label="Aumentar cantidad"
+                >+</button>
+              </div>
+              <span class="text-base font-medium text-red-600">S/ {{ item.product.onlinePrice * item.quantity | number: '1.2-2' }}</span>
+              <button
+                type="button"
+                (click)="cartService.remove(item.product.id)"
+                class="text-xs text-neutral-400 hover:text-red-600 transition"
+              >Eliminar</button>
+            </div>
+          </article>
+        }
+      </div>
+
+      <!-- Resumen -->
+      <aside class="flex-1">
+        <div class="bg-white border border-neutral-200 rounded-xl p-5 shadow-sm sticky top-24 flex flex-col gap-4">
+          <h2 class="text-lg font-medium text-neutral-900">Resumen del pedido</h2>
+
+          <div class="flex flex-col gap-2 text-sm">
+            <div class="flex items-center justify-between text-neutral-600">
+              <span>Subtotal ({{ cartService.totalItems() }} productos)</span>
+              <span>S/ {{ cartService.totalPrice() | number: '1.2-2' }}</span>
+            </div>
+            <div class="flex items-center justify-between text-neutral-600">
+              <span>Envío</span>
+              <span class="text-red-600 font-medium">Gratis</span>
+            </div>
+          </div>
+
+          <div class="border-t border-neutral-200 pt-3 flex items-center justify-between">
+            <span class="text-base font-medium text-neutral-900">Total</span>
+            <span class="text-xl font-medium text-red-600">S/ {{ cartService.totalPrice() | number: '1.2-2' }}</span>
+          </div>
+
+          <button
+            type="button"
+            class="w-full text-sm font-medium py-2.5 rounded-full bg-red-600 text-white hover:bg-red-700 transition"
+          >
+            Proceder al pago
+          </button>
+          <a routerLink="/" class="text-center text-sm font-medium text-red-600 hover:underline">Seguir comprando</a>
+
+          <p class="text-xs text-neutral-400 text-center">Precios incluyen IGV. Envío gratis en pedidos seleccionados.</p>
+        </div>
+      </aside>
+    </div>
+  }
+</section>

@@ -1,0 +1,100 @@
+<header class="w-full bg-white shadow-md sticky top-0 z-50">
+  <div class="mx-auto px-6 py-3">
+    <div class="flex items-center justify-between gap-3 md:gap-6">
+      <a href="/" class="shrink-0">
+        <img src="/LogoPlazaVeaV2.svg" alt="plazaVea" class="h-10 w-auto" />
+      </a>
+
+      <div class="relative">
+        <button
+          (click)="toggleCategoryMenu()"
+          type="button"
+          class="flex items-center p-2 rounded cursor-pointer"
+        >
+          <svg
+            class="w-5 h-5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+
+        @if (isCategoryMenuOpen()) {
+          <div class="absolute left-0 top-full mt-2 w-64 bg-white rounded-xl shadow-lg z-50 p-2">
+            @for (cat of navCategories(); track cat.id) {
+              <a
+                href="#{{ cat.id }}"
+                (click)="isCategoryMenuOpen.set(false)"
+                class="flex justify-between px-4 py-2.5 hover:bg-red-50 text-sm"
+              >
+                <span>{{ cat.name }}</span>
+                @if (cat.badge) {
+                  <span
+                    class="bg-[#ffea00] text-red-900 text-[10px] font-medium px-1.5 py-0.5 rounded"
+                    >{{ cat.badge }}</span
+                  >
+                }
+              </a>
+            }
+          </div>
+        }
+      </div>
+
+      <div class="flex-1 max-w-2xl relative">
+        <input
+          type="text"
+          placeholder="¿Qué estás buscando ?"
+          class="w-full bg-neutral-100 text-neutral-800 pl-4 pr-12 py-2.5 rounded-full text-sm border border-neutral-200"
+        />
+        <button
+          type="button"
+          title="Buscar"
+          class="absolute right-1 top-1/2 -translate-y-1/2 flex bg-red-700 text-white p-2 rounded-full cursor-pointer"
+        >
+          <svg
+            class="w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <div class="hidden sm:flex items-center gap-4">
+        <div class="flex items-center gap-2 cursor-pointer">
+          <app-package-icon [fill]="packageIcon.fill" [iconClass]="packageIcon.iconClass" />
+          <span class="text-sm">Mis pedidos</span>
+        </div>
+        <div class="flex items-center gap-2 cursor-pointer">
+          <app-user-icon [fill]="userIcon.fill" [iconClass]="userIcon.iconClass" />
+          <span class="text-sm">Mi cuenta</span>
+          <app-chevron-down-icon [fill]="chevronIcon.fill" [iconClass]="chevronIcon.iconClass" />
+        </div>
+      </div>
+
+      <a
+        routerLink="/cart"
+        class="flex items-center gap-2.5 bg-white text-[#ea0029] px-3.5 py-2 rounded-full cursor-pointer"
+      >
+        <div class="relative">
+          <app-cart-icon [fill]="cartIcon.fill" [iconClass]="cartIcon.iconClass" />
+          <span
+            class="absolute -top-2 -right-2 bg-[#ffea00] text-red-900 text-[11px] font-medium w-5 h-5 flex items-center justify-center rounded-full"
+          >
+            {{ cartService.totalItems() }}
+          </span>
+        </div>
+      </a>
+    </div>
+  </div>
+</header>

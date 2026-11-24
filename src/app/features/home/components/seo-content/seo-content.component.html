@@ -1,0 +1,13 @@
+<section class="w-full bg-neutral-100 pt-6 pb-12">
+  <div class="max-w-7xl mx-auto px-4 text-neutral-700 leading-relaxed">
+    <h2 class="text-lg font-medium text-neutral-900 mb-4">{{ title }}</h2>
+    <div class="grid grid-cols-3 gap-6">
+      @for (col of columns; track col.heading) {
+        <div>
+          <h3 class="text-base font-medium text-neutral-900 mb-2">{{ col.heading }}</h3>
+          <p class="text-xs text-neutral-500">{{ col.text }}</p>
+        </div>
+      }
+    </div>
+  </div>
+</section>

@@ -1,0 +1,11 @@
+<section id="especiales" class="max-w-7xl mx-auto px-4 mt-12">
+  <h3 class="text-lg sm:text-2xl font-medium text-neutral-900 tracking-tight mb-4">
+    Productos especiales
+  </h3>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    @for (image of banners; track image) {
+      <img [src]="image" alt="" class="w-full h-44 object-cover rounded-xl" />
+    }
+  </div>
+</section>
+

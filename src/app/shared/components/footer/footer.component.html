@@ -1,0 +1,229 @@
+<footer class="bg-[#1f1f1f] text-neutral-300 mt-16 font-sans">
+  <!-- Trust Badges Strip -->
+  <div class="bg-white text-neutral-800 py-6 px-4 border-b border-neutral-200">
+    <div class="max-w-7xl mx-auto grid grid-cols-1 sm:grid-cols-3 gap-4">
+      @for (badge of trustBadges; track badge.title) {
+        <div class="flex flex-col items-center gap-2 text-center">
+          <img [src]="badge.image" [alt]="badge.title" class="h-14" />
+          <span class="font-medium text-base">{{ badge.title }}</span>
+          <app-chevron-down-icon iconClass="w-5 h-5 text-red-600 -rotate-90" />
+        </div>
+      }
+    </div>
+  </div>
+
+  <!-- Newsletter Subscribe Strip -->
+  <div class="bg-[#ea0029] text-white py-8 px-4">
+    <div class="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+      <div class="text-center md:text-left">
+        <h3 class="text-xl md:text-2xl font-medium tracking-tight">
+          ¡Entérate de todas nuestras ofertas!
+        </h3>
+        <p class="text-sm text-red-100 font-medium">
+          Suscríbete a nuestro boletín y recibe promociones exclusivas en tu correo.
+        </p>
+      </div>
+
+      <div class="w-full md:w-auto max-w-md">
+        @if (!subscribed()) {
+          <form (ngSubmit)="subscribeNewsletter()" class="flex flex-col sm:flex-row gap-2">
+            <input
+              type="email"
+              name="newsletterEmail"
+              [ngModel]="email()"
+              (ngModelChange)="email.set($event)"
+              placeholder="Ingresa tu correo electrónico"
+              required
+              class="w-full sm:w-80 px-4 py-2.5 rounded-lg text-neutral-800 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-[#ffea00]"
+            />
+            <button
+              type="submit"
+              class="bg-[#1f1f1f] hover:bg-black text-white font-medium px-6 py-2.5 rounded-lg text-sm transition-colors cursor-pointer shadow-md shrink-0"
+            >
+              Suscribirme
+            </button>
+          </form>
+        } @else {
+          <div
+            class="bg-white/20 border border-white/40 text-white font-medium text-sm px-4 py-2.5 rounded-lg text-center flex items-center justify-center gap-2"
+          >
+            <svg
+              class="w-5 h-5 text-[#ffea00]"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+            ¡Gracias por suscribirte a plazaVea!
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Links Grid -->
+  <div class="max-w-7xl mx-auto px-4 py-12">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+      <!-- Col 1: Servicio al Cliente -->
+      <div>
+        <h4
+          class="text-white text-base font-medium mb-4 uppercase tracking-wider border-b border-neutral-700 pb-2"
+        >
+          Servicio al Cliente
+        </h4>
+        <ul class="space-y-2.5 text-sm text-neutral-400">
+          <li class="flex items-center gap-2">
+            <span class="text-red-500 font-medium">📞</span>
+            <span>Central: <strong class="text-neutral-200">(01) 620-3000</strong></span>
+          </li>
+          <li class="flex items-center gap-2">
+            <span class="text-neutral-500 font-medium">💬</span>
+            <span class="hover:text-white cursor-pointer transition-colors"
+              >WhatsApp Oficial Vea</span
+            >
+          </li>
+          <li>
+            <span class="text-xs text-neutral-500">Horario: Lunes a Domingo 8:00 am - 8:00 pm</span>
+          </li>
+          <li><a href="#" class="hover:text-white transition-colors">Preguntas Frecuentes</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Estado de mi pedido</a></li>
+          <li>
+            <a href="#" class="hover:text-white transition-colors">Comprobantes electrónicos</a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Col 2: Nosotros -->
+      <div>
+        <h4
+          class="text-white text-base font-medium mb-4 uppercase tracking-wider border-b border-neutral-700 pb-2"
+        >
+          Nosotros
+        </h4>
+        <ul class="space-y-2 text-sm text-neutral-400">
+          <li><a href="#" class="hover:text-white transition-colors">Conócenos</a></li>
+          <li>
+            <a href="#" class="hover:text-white transition-colors">Nuestras tiendas en Perú</a>
+          </li>
+          <li><a href="#" class="hover:text-white transition-colors">Trabaja con nosotros</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Ventas corporativas</a></li>
+          <li>
+            <a href="#" class="hover:text-white transition-colors">Sostenibilidad y Comunidad</a>
+          </li>
+          <li><a href="#" class="hover:text-white transition-colors">Canal de integridad</a></li>
+        </ul>
+      </div>
+
+      <!-- Col 3: Políticas y Legal -->
+      <div>
+        <h4
+          class="text-white text-base font-medium mb-4 uppercase tracking-wider border-b border-neutral-700 pb-2"
+        >
+          Políticas y Legal
+        </h4>
+        <ul class="space-y-2 text-sm text-neutral-400">
+          <li><a href="#" class="hover:text-white transition-colors">Términos y condiciones</a></li>
+          <li><a href="#" class="hover:text-white transition-colors">Política de privacidad</a></li>
+          <li>
+            <a href="#" class="hover:text-white transition-colors"
+              >Política de cambios y devoluciones</a
+            >
+          </li>
+          <li><a href="#" class="hover:text-white transition-colors">Garantías de productos</a></li>
+          <li>
+            <a href="#" class="hover:text-white transition-colors"
+              >Seguridad en tus compras online</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <!-- Col 4: Medios de pago y Libro de reclamaciones -->
+      <div>
+        <h4
+          class="text-white text-base font-medium mb-4 uppercase tracking-wider border-b border-neutral-700 pb-2"
+        >
+          Medios de Pago
+        </h4>
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span
+            class="bg-neutral-800 border border-neutral-700 text-xs text-white font-medium px-2.5 py-1 rounded"
+            >Tarjeta oh!</span
+          >
+          <span
+            class="bg-neutral-800 border border-neutral-700 text-xs text-white font-medium px-2.5 py-1 rounded"
+            >Visa</span
+          >
+          <span
+            class="bg-neutral-800 border border-neutral-700 text-xs text-white font-medium px-2.5 py-1 rounded"
+            >Mastercard</span
+          >
+          <span
+            class="bg-neutral-800 border border-neutral-700 text-xs text-white font-medium px-2.5 py-1 rounded"
+            >Amex</span
+          >
+          <span
+            class="bg-neutral-800 border border-neutral-700 text-xs text-white font-medium px-2.5 py-1 rounded"
+            >Yape</span
+          >
+          <span
+            class="bg-neutral-800 border border-neutral-700 text-xs text-white font-medium px-2.5 py-1 rounded"
+            >Plin</span
+          >
+        </div>
+
+        <h4 class="text-white text-xs font-medium mb-2 uppercase tracking-wider">
+          Libro de Reclamaciones
+        </h4>
+        <div
+          class="bg-neutral-800/80 p-3 rounded-xl border border-neutral-700 flex items-center gap-3 hover:bg-neutral-800 transition-colors cursor-pointer"
+        >
+          <div
+            class="w-10 h-10 bg-yellow-500/20 text-yellow-400 rounded-lg flex items-center justify-center shrink-0"
+          >
+            <svg
+              class="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"
+              />
+            </svg>
+          </div>
+          <div class="text-xs">
+            <p class="font-medium text-white">Libro de Reclamaciones Virtual</p>
+            <p class="text-neutral-400 text-[11px]">
+              Conforme al Código de Protección al Consumidor
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Copyright -->
+    <div
+      class="border-t border-neutral-800 pt-6 flex flex-col md:flex-row items-center justify-between gap-4 text-xs text-neutral-500"
+    >
+      <div class="flex items-center gap-2">
+        <span class="font-medium text-white lowercase">plaza</span>
+        <span class="font-medium text-[#ffea00]">Vea</span>
+        <span
+          >• © 2026 Todos los derechos reservados. Supermercados Peruanos S.A. RUC:
+          20100070970</span
+        >
+      </div>
+      <div class="flex items-center gap-4">
+        <span class="hover:text-neutral-400 cursor-pointer">Política de Cookies</span>
+        <span>•</span>
+        <span class="hover:text-neutral-400 cursor-pointer">Defensa del Consumidor</span>
+      </div>
+    </div>
+  </div>
+</footer>
