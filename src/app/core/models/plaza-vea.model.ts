@@ -1,8 +1,16 @@
+export interface DeliveryOption {
+  type: string;
+  fromPrice?: number;
+  free?: boolean;
+}
+
 export interface Product {
   id: string;
   name: string;
   brand: string;
+  sku?: string;
   imageUrl: string;
+  images?: string[];
   regularPrice: number;
   onlinePrice: number;
   ohPrice?: number;
@@ -11,6 +19,14 @@ export interface Product {
   badge?: string;
   category: 'electro' | 'supermercado' | 'flash' | 'hogar';
   inStock?: boolean;
+  stock?: number;
+  soldBy?: string;
+  sellerBusinessName?: string;
+  sellerRuc?: string;
+  deliveryOptions?: DeliveryOption[];
+  paymentMethods?: string[];
+  sipPromo?: string;
+  cashback?: string;
 }
 
 export interface HeroBanner {

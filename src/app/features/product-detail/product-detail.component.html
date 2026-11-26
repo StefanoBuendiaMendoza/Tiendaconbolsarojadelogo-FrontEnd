@@ -1,0 +1,279 @@
+@if (product(); as p) {
+  <!-- Breadcrumb -->
+  <nav class="max-w-7xl mx-auto px-4 py-3 flex items-center gap-2 text-xs text-neutral-400">
+    <a routerLink="/" class="hover:text-red-600 flex items-center text-neutral-500">
+      <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+        />
+      </svg>
+    </a>
+    <span>›</span>
+    <span class="hover:text-neutral-600">{{ categoryLabel() }}</span>
+    <span>›</span>
+    <span class="text-neutral-600 truncate">{{ p.name }}</span>
+  </nav>
+
+  <!-- Contenido Principal: 3 Columnas -->
+  <section class="max-w-7xl mx-auto px-4 pb-10">
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <!-- COLUMNA 1: Galería de imágenes (5 cols) -->
+      <div class="lg:col-span-5 flex gap-4">
+        <!-- Miniaturas verticales -->
+        <div class="flex flex-col gap-2.5">
+          @for (img of images(); track img) {
+            <button
+              type="button"
+              (click)="selectedImage.set(img)"
+              class="w-14 h-14 border rounded-md overflow-hidden p-1 bg-white transition"
+              [class.border-red-600]="selectedImage() === img"
+              [class.border-neutral-200]="selectedImage() !== img"
+            >
+              <img [src]="img" [alt]="p.name" class="w-full h-full object-contain" />
+            </button>
+          }
+        </div>
+
+        <!-- Imagen principal -->
+        <div class="flex-1 flex items-center justify-center p-4 bg-white min-h-[380px]">
+          <img [src]="selectedImage()" [alt]="p.name" class="max-h-[420px] w-full object-contain" />
+        </div>
+      </div>
+
+      <!-- COLUMNA 2: Detalle del producto y precios (4 cols) -->
+      <div class="lg:col-span-4 flex flex-col">
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-xs font-medium text-neutral-500 uppercase tracking-wide">{{
+            p.brand
+          }}</span>
+          @if (p.sku) {
+            <span class="text-xs text-neutral-400">
+              <strong class="text-neutral-700 font-semibold">SKU:</strong> {{ p.sku }}
+            </span>
+          }
+        </div>
+
+        <h1 class="text-xl font-bold text-neutral-900 mt-1.5">{{ p.name }}</h1>
+
+        <!-- Bloque de Precios -->
+        <div class="mt-5 pt-4 border-t border-neutral-200 flex flex-col gap-2.5">
+          <!-- Precio Regular -->
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-neutral-600">Precio Regular</span>
+            <div class="flex items-center gap-3">
+              <span class="text-neutral-400 font-semibold line-through text-sm">
+                S/ {{ p.regularPrice | number: '1.2-2' }}
+              </span>
+              <span class="w-11"></span>
+            </div>
+          </div>
+
+          <!-- Precio Online -->
+          <div class="flex items-center justify-between text-xs">
+            <span class="text-red-600 font-medium">Precio Online</span>
+            <div class="flex items-center gap-3">
+              <span class="text-red-600 font-bold text-lg">
+                S/ {{ p.onlinePrice | number: '1.2-2' }}
+              </span>
+              <span
+                class="w-11 text-center bg-red-600 text-white text-[11px] font-bold py-0.5 rounded-full"
+              >
+                -{{ discountOf(p.onlinePrice) }}%
+              </span>
+            </div>
+          </div>
+
+          <!-- Precio Tarjeta -->
+          @if (p.ohPrice) {
+            <div class="flex items-center justify-between text-xs">
+              <div class="flex items-center gap-1.5">
+                <span class="text-sky-600 font-medium">Tarjeta</span>
+                <span class="bg-neutral-900 text-white text-[10px] font-bold px-1.5 py-0.5 rounded"
+                  >sip</span
+                >
+              </div>
+              <div class="flex items-center gap-3">
+                <span class="text-sky-600 font-bold text-lg">
+                  S/ {{ p.ohPrice | number: '1.2-2' }}
+                </span>
+                <span
+                  class="w-11 text-center bg-sky-600 text-white text-[11px] font-bold py-0.5 rounded-full"
+                >
+                  -{{ discountOf(p.ohPrice) }}%
+                </span>
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Acordeón Calculadora de Cuotas -->
+        <details class="mt-5 bg-neutral-100/80 border border-neutral-200 rounded-lg group">
+          <summary class="flex items-center justify-between px-4 py-3 cursor-pointer list-none">
+            <div class="flex items-center gap-2">
+              <span class="bg-neutral-900 text-white text-[10px] font-bold px-1.5 py-0.5 rounded"
+                >sip</span
+              >
+              <span class="text-xs font-semibold text-neutral-800"
+                >Calcula tus cuotas con tarjeta Sip</span
+              >
+            </div>
+            <svg
+              class="w-4 h-4 text-red-600 transition-transform group-open:rotate-180"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+
+          <div class="px-4 pb-4 pt-2 border-t border-neutral-200 bg-white rounded-b-lg">
+            <label class="text-xs text-neutral-600 block mb-1">Elige el número de cuotas</label>
+            <select
+              (change)="cuotas.set(+$any($event.target).value)"
+              class="w-full border border-neutral-300 rounded px-3 py-2 text-sm text-neutral-700 focus:outline-none focus:border-neutral-400"
+            >
+              <option [value]="1">Sin cuotas</option>
+              <option [value]="3">3 cuotas</option>
+              <option [value]="6">6 cuotas</option>
+              <option [value]="12">12 cuotas</option>
+            </select>
+            <p class="text-xs text-neutral-600 mt-3">Pago mensual:</p>
+            <p class="text-base font-bold text-red-600">
+              S/ {{ monthlyPayment() | number: '1.2-2' }}
+            </p>
+            <a href="#" class="text-xs text-red-600 underline mt-2 block"
+              >Si aún no tienes tu tarjeta Sip, solicítala aquí</a
+            >
+            <p class="text-[10px] text-neutral-400 mt-2">
+              *El valor de la cuota podría variar en función a la fecha de facturación y pago del
+              cliente.
+            </p>
+          </div>
+        </details>
+
+        <!-- Botón Agregar -->
+        <button
+          type="button"
+          (click)="addToCart()"
+          class="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-3 rounded-full text-sm mt-5 transition cursor-pointer"
+        >
+          Agregar
+        </button>
+        <p class="text-xs text-neutral-500 text-center mt-2">
+          {{ p.stock ?? 20 }}+ unidades disponibles
+        </p>
+      </div>
+
+      <!-- COLUMNA 3: Vendedor, Envío, Pagos y Promos (3 cols) -->
+      <div class="lg:col-span-3 flex flex-col gap-3">
+        <div class="border border-neutral-200 rounded-lg p-4 bg-white flex flex-col gap-4 text-xs">
+          <!-- Vendedor -->
+          @if (p.soldBy) {
+            <div class="pb-4 border-b border-neutral-200">
+              <p class="font-bold text-neutral-800 text-sm mb-1">Vendido y despachado por:</p>
+              <p class="font-bold text-red-600 underline uppercase mb-1">{{ p.soldBy }}</p>
+              @if (p.sellerBusinessName) {
+                <p class="text-[11px] text-neutral-500 leading-relaxed">
+                  Razón Social: {{ p.sellerBusinessName }}
+                </p>
+              }
+              @if (p.sellerRuc) {
+                <p class="text-[11px] text-neutral-500 mt-0.5">RUC: {{ p.sellerRuc }}</p>
+              }
+              <a href="#" class="text-xs text-red-600 underline font-medium mt-1.5 inline-block">
+                Términos y condiciones
+              </a>
+            </div>
+          }
+
+          <!-- Tipo de entrega -->
+          @if (p.deliveryOptions?.length) {
+            <div class="pb-4 border-b border-neutral-200">
+              <p class="font-bold text-neutral-800 text-sm mb-3">Tipo de entrega disponible:</p>
+              <div class="flex flex-col gap-3">
+                @for (d of p.deliveryOptions; track d.type) {
+                  <div class="flex items-start gap-2.5">
+                    <svg
+                      class="w-5 h-5 text-red-500 shrink-0 mt-0.5"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        d="M8.25 18.75a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h6m-9 0H3.375a1.125 1.125 0 01-1.125-1.125V14.25m17.25 4.5a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m3 0h1.125c.621 0 1.129-.504 1.09-1.124a17.902 17.902 0 00-3.213-9.193 2.056 2.056 0 00-1.58-.86H14.25M16.5 18.75h-2.25m0-11.177v-.958c0-.568-.422-1.048-.987-1.106a48.554 48.554 0 00-10.026 0 1.106 1.106 0 00-.987 1.106v7.635m12-6.677v6.677m0 4.5v-4.5m0 0h-12"
+                      />
+                    </svg>
+                    <div>
+                      <p class="font-semibold text-neutral-800">{{ d.type }}</p>
+                      <p class="text-neutral-600 mt-0.5">
+                        Desde:
+                        <strong class="text-neutral-800">
+                          @if (d.free) {
+                            Gratis
+                          } @else {
+                            S/ {{ d.fromPrice | number: '1.2-2' }}
+                          }
+                        </strong>
+                      </p>
+                      <a href="#" class="text-red-600 underline font-medium mt-0.5 inline-block">
+                        Ver más {{ d.type === 'Delivery programado' ? 'distritos' : 'tiendas' }}
+                      </a>
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          }
+
+          <!-- Métodos de pago -->
+          @if (p.paymentMethods?.length) {
+            <div>
+              <p class="font-bold text-neutral-800 text-sm mb-2">Métodos de pago:</p>
+              <div class="flex flex-wrap gap-1.5">
+                @for (m of p.paymentMethods; track m) {
+                  <span
+                    class="px-2 py-1 border border-neutral-200 rounded text-[11px] font-medium text-neutral-700 bg-neutral-50"
+                  >
+                    {{ m }}
+                  </span>
+                }
+              </div>
+            </div>
+          }
+        </div>
+
+        <!-- Banners promocionales inferiores -->
+        @if (p.sipPromo) {
+          <div class="border border-sky-200 bg-sky-50 rounded-lg p-3 flex items-start gap-2.5">
+            <span
+              class="bg-neutral-900 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0 mt-0.5"
+              >sip</span
+            >
+            <p class="text-xs text-neutral-800 leading-snug">{{ p.sipPromo }}</p>
+          </div>
+        }
+
+        @if (p.cashback) {
+          <div class="border border-sky-300 bg-white rounded-lg p-3 flex items-start gap-2.5">
+            <span
+              class="bg-neutral-900 text-white text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0 mt-0.5"
+              >sip</span
+            >
+            <p class="text-xs text-neutral-700 leading-snug">{{ p.cashback }}</p>
+          </div>
+        }
+      </div>
+    </div>
+  </section>
+} @else {
+  <div class="max-w-7xl mx-auto px-4 py-20 text-center text-sm text-neutral-500">
+    Producto no encontrado.
+  </div>
+}

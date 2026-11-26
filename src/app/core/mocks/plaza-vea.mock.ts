@@ -145,7 +145,7 @@ export const MOCK_ELECTRO_PRODUCTS: Product[] = [
     name: 'Silla de Oficina Ergonómica Regulable con Soporte Lumbar',
     brand: 'KREA',
     imageUrl:
-      'https://images.unsplash.com/photo-1580481077195-c3a821a5060f?auto=format&fit=crop&w=400&q=80',
+      'https://plazavea.vteximg.com.br/arquivos/ids/36807921-450-450/20215367.jpg?v=639300142198530000',
     regularPrice: 349.0,
     onlinePrice: 219.0,
     ohPrice: 199.0,
@@ -194,6 +194,42 @@ export const MOCK_ELECTRO_PRODUCTS: Product[] = [
     category: 'electro',
     badge: '-24%',
     inStock: true,
+  },
+  {
+    id: 'e7',
+    name: 'Licuadora de Vaso 1.5L 600W con 3 Velocidades y Vaso Medidor',
+    brand: 'OSTER',
+    sku: '20633772',
+    imageUrl:
+      'https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=600&q=80',
+    images: [
+      'https://images.unsplash.com/photo-1570222094114-d054a817e56b?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1585515320310-259814833e62?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?auto=format&fit=crop&w=600&q=80',
+      'https://images.unsplash.com/photo-1590794056226-7949a9487d3a?auto=format&fit=crop&w=600&q=80',
+    ],
+    regularPrice: 176.9,
+    onlinePrice: 127.37,
+    ohPrice: 119.87,
+    discountPercentage: 28,
+    category: 'electro',
+    badge: '-28%',
+    inStock: true,
+    stock: 20,
+    unitText: 'Unidad',
+    soldBy: 'VITAPOINT',
+    sellerBusinessName:
+      'BLUE CR TRADING SOCIEDAD ANONIMA CERRADA - BLUE CR TRADING S.A.C.',
+    sellerRuc: '20515391500',
+    deliveryOptions: [
+      { type: 'Delivery programado', fromPrice: 6.9 },
+      { type: 'Recojo en tienda', free: true },
+    ],
+    paymentMethods: ['Pago online con métodos de pago'],
+    sipPromo:
+      '¡Pide tu Tarjeta de Crédito Sip desde la web! y recibe S/50 en tu primera compra online por compras mayores a S/100. ¡Solicítala aquí!',
+    cashback:
+      'Te devolvemos el 1% de toda tu compra pagando con tus tarjetas de crédito o débito Sip.',
   },
 ];
 

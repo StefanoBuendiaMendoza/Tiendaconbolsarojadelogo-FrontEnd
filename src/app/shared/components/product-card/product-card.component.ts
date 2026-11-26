@@ -1,11 +1,12 @@
 import { Component, Input, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { CartService } from '../../../core/services/cart.service';
 import { Product } from '../../../core/models/plaza-vea.model';
 
 @Component({
   selector: 'app-product-card',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './product-card.component.html',
 })
 export class ProductCardComponent {

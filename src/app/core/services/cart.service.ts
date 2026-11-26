@@ -8,12 +8,10 @@ export class CartService {
   private readonly _items = signal<{ product: Product; quantity: number }[]>([]);
   readonly items = this._items.asReadonly();
 
-  readonly totalItems = computed(() =>
-    this._items().reduce((acc, item) => acc + item.quantity, 0)
-  );
+  readonly totalItems = computed(() => this._items().reduce((acc, item) => acc + item.quantity, 0));
 
   readonly totalPrice = computed(() =>
-    this._items().reduce((acc, item) => acc + (item.product.onlinePrice * item.quantity), 0)
+    this._items().reduce((acc, item) => acc + item.product.onlinePrice * item.quantity, 0),
   );
 
   addToCart(product: Product) {
@@ -21,7 +19,7 @@ export class CartService {
       const existing = current.find((item) => item.product.id === product.id);
       if (existing) {
         return current.map((item) =>
-          item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+          item.product.id === product.id ? { ...item, quantity: item.quantity + 1 } : item,
         );
       }
       return [...current, { product, quantity: 1 }];
@@ -31,8 +29,8 @@ export class CartService {
   increment(productId: string) {
     this._items.update((current) =>
       current.map((item) =>
-        item.product.id === productId ? { ...item, quantity: item.quantity + 1 } : item
-      )
+        item.product.id === productId ? { ...item, quantity: item.quantity + 1 } : item,
+      ),
     );
   }
 
@@ -40,9 +38,9 @@ export class CartService {
     this._items.update((current) =>
       current
         .map((item) =>
-          item.product.id === productId ? { ...item, quantity: item.quantity - 1 } : item
+          item.product.id === productId ? { ...item, quantity: item.quantity - 1 } : item,
         )
-        .filter((item) => item.quantity > 0)
+        .filter((item) => item.quantity > 0),
     );
   }
 
@@ -50,4 +48,3 @@ export class CartService {
     this._items.update((current) => current.filter((item) => item.product.id !== productId));
   }
 }
-
