@@ -9,7 +9,7 @@
           <p class="text-md text-neutral-800 mt-2 max-w-sm">{{ dept.description }}</p>
         </div>
         <a
-          [href]="'#' + dept.id"
+          [routerLink]="['/' + (dept.id === 'electro' ? 'electrohogar' : dept.id)]"
           class="bg-red-800 text-white font-medium px-5 py-2 rounded-full shrink-0"
         >
           {{ dept.buttonText }}

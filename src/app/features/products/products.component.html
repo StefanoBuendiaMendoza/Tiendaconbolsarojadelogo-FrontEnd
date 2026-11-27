@@ -1,0 +1,165 @@
+<section class="max-w-330 mx-auto px-4 py-6">
+  <nav class="text-xs text-neutral-500 mb-3">
+    <a routerLink="/" class="hover:text-red-600">Inicio</a>
+    <span class="mx-1">/</span>
+    <span class="text-neutral-800">Catálogo</span>
+    @if (selectedCategory() !== 'all') {
+      <span class="mx-1">/</span>
+      <span class="text-neutral-800">{{ categoryLabel() }}</span>
+    }
+  </nav>
+
+  <div class="flex items-end justify-between gap-4 mb-6">
+    <div>
+      <h1 class="text-3xl font-medium tracking-tight text-neutral-900">{{ categoryLabel() }}</h1>
+      <p class="text-sm text-neutral-500 mt-1">{{ filteredProducts().length }} resultados</p>
+    </div>
+    <div class="flex items-center gap-2">
+      <label for="sort" class="text-sm text-neutral-600">Ordenar por</label>
+      <select
+        id="sort"
+        [value]="sortBy()"
+        (change)="setSort($any($event.target).value)"
+        class="border border-neutral-200 rounded-md px-3 py-2 text-sm bg-white"
+      >
+        <option value="relevance">Relevancia</option>
+        <option value="price-asc">Precio: menor a mayor</option>
+        <option value="price-desc">Precio: mayor a menor</option>
+        <option value="discount-desc">Mayor descuento</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="flex flex-col lg:flex-row gap-6">
+    <aside class="w-full lg:w-64 shrink-0">
+      <div class="bg-white border border-neutral-200 rounded-xl p-5 space-y-6">
+        <div>
+          <input
+            type="search"
+            [value]="searchQuery()"
+            (input)="searchQuery.set($any($event.target).value); visibleCount.set(12)"
+            placeholder="Buscar en catálogo"
+            class="w-full border border-neutral-200 rounded-full px-4 py-2 text-sm"
+          />
+        </div>
+
+        <div>
+          <h3 class="text-xs font-medium uppercase tracking-wide text-neutral-500 mb-2">Categorías</h3>
+          <ul class="space-y-1">
+            @for (cat of categories(); track cat.id) {
+              <li>
+                <button
+                  type="button"
+                  (click)="setCategory(cat.id)"
+                  class="w-full flex justify-between text-sm px-2 py-1.5 rounded"
+                  [class.bg-red-50]="selectedCategory() === cat.id"
+                  [class.text-red-600]="selectedCategory() === cat.id"
+                >
+                  <span>{{ cat.label }}</span>
+                  <span class="text-neutral-400">{{ cat.count }}</span>
+                </button>
+              </li>
+            }
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-medium uppercase tracking-wide text-neutral-500 mb-2">Marcas</h3>
+          <ul class="space-y-1 max-h-48 overflow-auto">
+            @for (brand of availableBrands(); track brand) {
+              <li>
+                <label class="flex items-center gap-2 text-sm px-2 py-1 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    [checked]="selectedBrands().has(brand)"
+                    (change)="toggleBrand(brand)"
+                    class="accent-red-600"
+                  />
+                  <span>{{ brand }}</span>
+                </label>
+              </li>
+            }
+          </ul>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-medium uppercase tracking-wide text-neutral-500 mb-2">Precio</h3>
+          <select
+            [value]="priceRange()"
+            (change)="setPriceRange($any($event.target).value)"
+            class="w-full border border-neutral-200 rounded-md px-3 py-2 text-sm bg-white"
+          >
+            @for (range of priceRanges; track range.id) {
+              <option [value]="range.id">{{ range.label }}</option>
+            }
+          </select>
+        </div>
+
+        <div>
+          <h3 class="text-xs font-medium uppercase tracking-wide text-neutral-500 mb-2">Descuento mínimo</h3>
+          <div class="flex flex-wrap gap-2">
+            @for (d of [0, 10, 20, 30, 40]; track d) {
+              <button
+                type="button"
+                (click)="setDiscount(d)"
+                class="text-xs px-2.5 py-1 rounded-full border"
+                [class.border-red-600]="selectedDiscount() === d"
+                [class.text-red-600]="selectedDiscount() === d"
+                [class.border-neutral-200]="selectedDiscount() !== d"
+              >
+                {{ d === 0 ? 'Todos' : d + '%+' }}
+              </button>
+            }
+          </div>
+        </div>
+
+        <div>
+          <label class="flex items-center gap-2 text-sm cursor-pointer">
+            <input
+              type="checkbox"
+              [checked]="onlyInStock()"
+              (change)="onlyInStock.set($any($event.target).checked); visibleCount.set(12)"
+              class="accent-red-600"
+            />
+            <span>Solo disponibles</span>
+          </label>
+        </div>
+
+        <button
+          type="button"
+          (click)="clearFilters()"
+          class="w-full text-sm font-medium py-2 rounded-full border border-neutral-300 text-neutral-700 hover:bg-neutral-100"
+        >
+          Limpiar filtros
+        </button>
+      </div>
+    </aside>
+
+    <div class="flex-1">
+      @if (visibleProducts().length === 0) {
+        <div class="text-center py-16 text-neutral-500">
+          <p class="text-lg font-medium">No encontramos productos</p>
+          <p class="text-sm mt-1">Prueba cambiando los filtros o la búsqueda.</p>
+        </div>
+      } @else {
+        <div class="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+          @for (product of visibleProducts(); track product.id) {
+            <app-product-card [product]="product" />
+          }
+        </div>
+
+        @if (hasMore()) {
+          <div class="flex justify-center mt-6">
+            <button
+              type="button"
+              (click)="loadMore()"
+              class="text-sm font-medium px-6 py-2.5 rounded-full border border-red-600 text-red-600 hover:bg-red-600 hover:text-white transition"
+            >
+              Ver más productos
+            </button>
+          </div>
+        }
+      }
+    </div>
+  </div>
+</section>

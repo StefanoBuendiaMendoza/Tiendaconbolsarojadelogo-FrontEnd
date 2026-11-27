@@ -1,6 +1,6 @@
 import { Component, signal, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MOCK_FLASH_DEAL, MOCK_ELECTRO_PRODUCTS } from '../../../../core/mocks/plaza-vea.mock';
+import { MOCK_FLASH_DEAL } from '../../../../core/mocks/plaza-vea.mock';
 
 @Component({
   selector: 'app-flash-deals',
@@ -12,8 +12,15 @@ export class FlashDealsComponent implements OnInit, OnDestroy {
   protected readonly timerMinutes = signal(MOCK_FLASH_DEAL.minutes);
   protected readonly timerSeconds = signal(MOCK_FLASH_DEAL.seconds);
   protected readonly images = [
-    ...MOCK_FLASH_DEAL.products.map((p) => p.imageUrl),
-    ...MOCK_ELECTRO_PRODUCTS.slice(0, 2).map((p) => p.imageUrl),
+    'https://plazavea.vteximg.com.br/arquivos/NF-SOLOXHOY-D-HR-20631696-26NOV-1.webp',
+    'https://plazavea.vteximg.com.br/arquivos/NF-SOLOXHOY-D-HR-20714702-26NOV-2.webp',
+    'https://plazavea.vteximg.com.br/arquivos/NF-SOLOXHOY-D-HR-20394547-26NOV-3.webp',
+    'https://plazavea.vteximg.com.br/arquivos/FOOD-SOLOXHOY-D-BW-20050284-26NOV-01.webp',
+    'https://plazavea.vteximg.com.br/arquivos/FOOD-SOLOXHOY-D-BW-131922-26NOV-02.webp',
+    'https://plazavea.vteximg.com.br/arquivos/FOOD-SOLOXHOY-D-BW-20358117-26NOV-03.webp',
+    'https://plazavea.vteximg.com.br/arquivos/NF-SOLOXHOY-D-HR-20633524-26NOV-4.webp',
+    'https://plazavea.vteximg.com.br/arquivos/NF-SOLOXHOY-D-HR-20571566-26NOV-5.webp',
+    'https://plazavea.vteximg.com.br/arquivos/MKP-SOLOXHOY-D-HR-12689787-26NOV-6.webp',
   ];
   private timerInterval: any;
 

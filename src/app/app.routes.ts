@@ -19,6 +19,42 @@ export const routes: Routes = [
       ),
   },
   {
+    path: 'catalogo',
+    loadComponent: () =>
+      import('./features/products/products.component').then(
+        (m) => m.ProductsComponent,
+      ),
+  },
+  {
+    path: 'catalogo/:category',
+    loadComponent: () =>
+      import('./features/products/products.component').then(
+        (m) => m.ProductsComponent,
+      ),
+  },
+  {
+    path: 'categoria/:category',
+    loadComponent: () =>
+      import('./features/products/products.component').then(
+        (m) => m.ProductsComponent,
+      ),
+  },
+  {
+    path: ':category',
+    loadComponent: () =>
+      import('./features/products/products.component').then(
+        (m) => m.ProductsComponent,
+      ),
+  },
+  {
+    path: 'catalog',
+    redirectTo: 'catalogo',
+  },
+  {
+    path: 'productos',
+    redirectTo: 'catalogo',
+  },
+  {
     path: '**',
     redirectTo: '',
   },
